@@ -4,6 +4,7 @@ import { MenuItem } from 'primereact/menuitem';
 import 'primereact/resources/themes/saga-blue/theme.css';  // Tema de PrimeReact
 import 'primereact/resources/primereact.min.css';          // Estilos principales de PrimeReact
 import 'primeicons/primeicons.css';                        // Iconos de PrimeReact
+import 'primeflex/primeflex.css';                          // Utilidades de PrimeFlex
 
 type Props = {}
 
@@ -14,50 +15,14 @@ const Navigation = (props: Props) => {
             icon: 'pi pi-home'
         },
         {
-            label: 'Features',
-            icon: 'pi pi-star'
-        },
-        {
-            label: 'Projects',
-            icon: 'pi pi-search',
-            items: [
-                {
-                    label: 'Components',
-                    icon: 'pi pi-bolt'
-                },
-                {
-                    label: 'Blocks',
-                    icon: 'pi pi-server'
-                },
-                {
-                    label: 'UI Kit',
-                    icon: 'pi pi-pencil'
-                },
-                {
-                    label: 'Templates',
-                    icon: 'pi pi-palette',
-                    items: [
-                        {
-                            label: 'Apollo',
-                            icon: 'pi pi-palette'
-                        },
-                        {
-                            label: 'Ultima',
-                            icon: 'pi pi-palette'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             label: 'Contact',
-            icon: 'pi pi-envelope'
+            icon: 'pi pi-cog'
         }
     ];
     
     return (
         <div className="card">
-            <Menubar model={items} />
+            <Menubar style={{ backgroundColor: 'white'}} model={items} />
         </div>
     )
 }

@@ -1,3 +1,3 @@
 export const ApiUsers = {
-    urlUsers: 'https://staging.duxsoftware.com.ar/api/personal'
+    urlUsers: 'https://staging.duxsoftware.com.ar/api'
 }
