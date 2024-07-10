@@ -1,14 +1,15 @@
-import React from 'react'
-import Table from './components/Table'
+import React from "react";
+import Table from "./components/Table";
 
-type Props = {}
+type Props = {};
 
 const page = (props: Props) => {
   return (
-    <>
-        <Table />
-    </>
-  )
-}
+    <div style={{ padding: "20px" }}>
+      <h1>Usuarios</h1>
+      <Table />
+    </div>
+  );
+};
 
-export default page
+export default page;
