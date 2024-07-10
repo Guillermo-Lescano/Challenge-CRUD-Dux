@@ -7,7 +7,7 @@ export const usersService = {
     getUsers: async () => {
         try {
             const response = await axios.get(`${URL}/personal` )
-            return response
+            return response.data
         } catch (error) {
             console.log(error)
         }
