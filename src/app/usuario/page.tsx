@@ -17,14 +17,19 @@ const page = (props: Props) => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <div className="card flex justify-content-between my-5">
-        <h1>Usuarios</h1>
-        <Button
-          label="Nuevo Usuario"
-          icon="pi pi-plus"
-          className=" bg-blue-500 text-white hover:bg-blue-700 w-2"
-          onClick={toggleModal}
-        />
+      <div className="field grid">
+        <div className="col-12 md:col-3">
+          <h1>Usuarios</h1>
+        </div>
+        <div className="col-12 md:col-9 flex justify-content-end">
+          <Button
+            label="Nuevo Usuario"
+            icon="pi pi-plus"
+            className=" bg-blue-500 text-white hover:bg-blue-700 w-3"
+            style={{ height: "2.5rem", paddingLeft: "0.7rem" }}
+            onClick={toggleModal}
+          />
+        </div>
         <AddModal openModal={openModal} setOpenModal={setOpenModal} />
       </div>
       <div>
