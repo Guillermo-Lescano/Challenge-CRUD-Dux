@@ -18,8 +18,6 @@ const Table = () => {
     fetchData();
   }, []);
 
-  console.log({ users });
-
   const usuarioBodyTemplate = (users: Usuario) => {
     return (
       <span

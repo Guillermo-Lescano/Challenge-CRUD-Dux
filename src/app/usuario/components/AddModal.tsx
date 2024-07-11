@@ -43,39 +43,43 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
           setOpenModal(false);
         }}
         footer={footerContent}
-        className="p-dialog-header-bg-blue-500 "
+        className=""
       >
         <div className="card flex flex-column align-items-center gap-5 my-5 ">
           <div>
             <p className="font-bold">Id:</p>
             <InputText
               type="text"
-              className="p-inputtext-lg"
+              className=""
               placeholder="Ingrese el id del usuario"
+              style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
             />
           </div>
           <div>
             <p className="font-bold">Nombre:</p>
             <InputText
               type="text"
-              className="p-inputtext-lg"
+              className=""
               placeholder="Ingrese el nombre del usuario"
+              style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
             />
           </div>
           <div>
             <p className="font-bold">Estado:</p>
             <InputText
               type="text"
-              className="p-inputtext-lg"
+              className=""
               placeholder="Large"
+              style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
             />
           </div>
           <div>
             <p className="font-bold">Sector:</p>
             <InputText
               type="text"
-              className="p-inputtext-lg w-full"
+              className=""
               placeholder="Large"
+              style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
             />
           </div>
         </div>
