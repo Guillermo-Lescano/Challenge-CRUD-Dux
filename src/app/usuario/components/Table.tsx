@@ -30,7 +30,10 @@ const Table = () => {
     const response = await usersService.getOneUser(id);
     setUser(response);
     setOpenModal(true);
-    console.log(response);
+  };
+
+  const deleteUsers = async (id: string) => {
+    await usersService.deleteUser(id);
   };
 
   const usuarioBodyTemplate = (users: Usuario) => {

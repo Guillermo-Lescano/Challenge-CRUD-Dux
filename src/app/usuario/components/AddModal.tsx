@@ -31,7 +31,7 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
     // Función para obtener datos de la API
     const fetchData = async () => {
       try {
-        const response = await usersService.getUsers(); // Reemplaza con la URL de tu API
+        const response = await usersService.getUsers();
         const data = response;
         // Extraer sectores y eliminar duplicados
         const numericSectors = data.map((item: { sector: number | string }) =>
@@ -48,8 +48,6 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
     fetchData();
   }, []);
 
-  console.log("sectors", sectors);
-  // Las opciones posibles
   const opciones = ["activo", "inactivo"];
 
   // Método de búsqueda
@@ -90,8 +88,6 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
     setOpenModal(false);
   };
 
-  console.log("user en modal", user);
-
   const footerContent = (
     <div className="field grid">
       <div className="col-12 md:col-6 ">
@@ -100,10 +96,9 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
           icon="pi pi-check"
           type="submit"
           onClick={() => {
-            console.log("Usuario añadido:", value); // Aquí puedes añadir lógica para enviar los datos
             onSubmit;
           }}
-          className="p-button-text border-2 bg-blue-500 text-white hover:bg-blue-700 flex justify-content-center"
+          className="p-button-text border-2 bg-blue-500 text-white hover:bg-blue-700 "
           style={{ height: "2.5rem" }}
           autoFocus
         />
@@ -136,17 +131,14 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
         <div className="card flex flex-column align-items-center gap-5 m-5 ">
           <div className="col-12">
             <p className="font-bold">Id:</p>
-            <IconField iconPosition="left">
-              <InputIcon className="pi pi-search"></InputIcon>
-              <InputText
-                type="text"
-                name="id"
-                value={user ? user.id : value.id}
-                placeholder="Ingrese el id del usuario"
-                onChange={handleChange}
-                style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
-              />
-            </IconField>
+            <InputText
+              type="text"
+              name="id"
+              value={user ? user.id : value.id}
+              placeholder="Ingrese el id del usuario"
+              onChange={handleChange}
+              style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
+            />
           </div>
           <div className="col-12">
             <p className="font-bold">Nombre:</p>
@@ -166,7 +158,7 @@ const AddModal = ({ openModal, setOpenModal, user }: Props) => {
               suggestions={items}
               name="estado"
               completeMethod={statusSearch}
-              /* onChange={(e) => setValue(e.value)} */
+              onChange={(e) => setValue(e.value)}
               onChange={handleChange}
               forceSelection
               dropdown

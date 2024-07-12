@@ -63,6 +63,24 @@ export const usersService = {
         } catch (error) {
             console.log(error)
         }
+    },
+
+    postUser: async (data: {}) => {
+        try {
+            const response = await axios.post(`${URL}/personal`, data)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    deleteUser: async(id: string) => {
+        try {
+            const response = await axios.delete(`${URL}/personal/${id}`)
+            return response
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
