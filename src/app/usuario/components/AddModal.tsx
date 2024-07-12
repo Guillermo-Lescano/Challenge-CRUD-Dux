@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -8,22 +8,89 @@ import {
   AutoComplete,
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
+import { Usuario } from "@/dto/Usuarios.dto";
+import { usersService } from "@/services/usuarios";
 
 type Props = {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  user?: Usuario;
 };
 
-const AddModal = ({ openModal, setOpenModal }: Props) => {
-  const [value, setValue] = useState<string>("");
+const AddModal = ({ openModal, setOpenModal, user }: Props) => {
+  const [value, setValue] = useState<Usuario>({
+    id: "",
+    usuario: "",
+    estado: "",
+    sector: 0,
+  });
   const [items, setItems] = useState<string[]>([]);
+  const [sectors, setSectors] = useState<[]>([]);
 
-  const search = (event: AutoCompleteCompleteEvent) => {
-    setItems([...Array(10).keys()].map((item) => event.query + "-" + item));
+  useEffect(() => {
+    // Función para obtener datos de la API
+    const fetchData = async () => {
+      try {
+        const response = await usersService.getUsers(); // Reemplaza con la URL de tu API
+        const data = response;
+        // Extraer sectores y eliminar duplicados
+        const numericSectors = data.map((item: { sector: number | string }) =>
+          Number(item.sector)
+        );
+        const uniqueSectors = [...new Set(numericSectors)];
+
+        setSectors(uniqueSectors);
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log("sectors", sectors);
+  // Las opciones posibles
+  const opciones = ["activo", "inactivo"];
+
+  // Método de búsqueda
+  const statusSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setItems(
+      opciones.filter((opcion) =>
+        opcion.toLowerCase().includes(event.query.toLowerCase())
+      )
+    );
   };
+
+  const sectorSearch = (event: { query: string }) => {
+    const query = parseInt(event.query, 10);
+    if (!isNaN(query)) {
+      setItems(
+        sectors.filter((sector) => sector.toString().includes(query.toString()))
+      );
+    } else {
+      setItems(sectors);
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setValue((prevValue) => ({ ...prevValue, [name]: value }));
+  };
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTimeout(() => {
+      setValue({ id: "", usuario: "", estado: "", sector: 0 });
+      closeModal();
+    }, 1000);
+  };
+
   const closeModal = () => {
+    setValue({ id: "", usuario: "", estado: "", sector: 0 });
     setOpenModal(false);
   };
+
+  console.log("user en modal", user);
 
   const footerContent = (
     <div className="field grid">
@@ -31,7 +98,11 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
         <Button
           label="Confirmar"
           icon="pi pi-check"
-          onClick={() => setOpenModal(false)}
+          type="submit"
+          onClick={() => {
+            console.log("Usuario añadido:", value); // Aquí puedes añadir lógica para enviar los datos
+            onSubmit;
+          }}
           className="p-button-text border-2 bg-blue-500 text-white hover:bg-blue-700 flex justify-content-center"
           style={{ height: "2.5rem" }}
           autoFocus
@@ -50,9 +121,9 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
   );
 
   return (
-    <div className="field grid">
+    <div className="field grid ">
       <Dialog
-        header="Usuario"
+        header={user ? "Editar usuario" : "Añadir usuario"}
         visible={openModal}
         style={{ width: "70vw" }}
         onHide={() => {
@@ -62,15 +133,17 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
         footer={footerContent}
         className=""
       >
-        <div className="card flex flex-column align-items-center gap-5 my-5 ">
+        <div className="card flex flex-column align-items-center gap-5 m-5 ">
           <div className="col-12">
             <p className="font-bold">Id:</p>
             <IconField iconPosition="left">
               <InputIcon className="pi pi-search"></InputIcon>
               <InputText
                 type="text"
-                className=""
+                name="id"
+                value={user ? user.id : value.id}
                 placeholder="Ingrese el id del usuario"
+                onChange={handleChange}
                 style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
               />
             </IconField>
@@ -79,18 +152,22 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
             <p className="font-bold">Nombre:</p>
             <InputText
               type="text"
-              className=""
+              name="usuario"
+              value={user ? user.usuario : value.usuario}
               placeholder="Ingrese el nombre del usuario"
+              onChange={handleChange}
               style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
             />
           </div>
           <div className="col-12">
             <p className="font-bold">Estado:</p>
             <AutoComplete
-              value={value}
+              value={user ? user.estado : value.estado}
               suggestions={items}
-              completeMethod={search}
-              onChange={(e) => setValue(e.value)}
+              name="estado"
+              completeMethod={statusSearch}
+              /* onChange={(e) => setValue(e.value)} */
+              onChange={handleChange}
               forceSelection
               dropdown
               style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
@@ -100,10 +177,12 @@ const AddModal = ({ openModal, setOpenModal }: Props) => {
             <p className="font-bold">Sector:</p>
             <div className="">
               <AutoComplete
-                value={value}
+                value={user ? user.sector : value.sector}
                 suggestions={items}
-                completeMethod={search}
-                onChange={(e) => setValue(e.value)}
+                name="sector"
+                completeMethod={sectorSearch}
+                /* onChange={(e) => setValue(e.value)} */
+                onChange={handleChange}
                 forceSelection
                 dropdown
                 style={{ width: "40rem", height: "2.5rem", fontSize: "1.2rem" }}
